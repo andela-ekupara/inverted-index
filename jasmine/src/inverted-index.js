@@ -2,7 +2,7 @@ Index = function(){
 
     this.index  = {};
     this.data = [];
-
+    //var self = this;
 
 
     this.createIndex =  function(filePath) {
@@ -49,24 +49,25 @@ Index = function(){
                 }
                 // set the index with noDups as the key and the array found as the value
                 self.index[noDups[i]] = self.index[noDups[i]].concat(found);
-                //obj = self.index;		
+                // = self.index;		
             }
-
-            console.log(self.index);
-            return self.index;
+            this.index = self.index;
+            console.log(this.index);
+            return this.index;
             //cb(self.getIndex(self.index));
         });
     };
 
-    this.getIndex = function() {
+    this.getIndex = function(filePath) {
         //returns an object that is an accurate index of the content of the JSON file.
         //this.index = ind;
-        //var self = this;
-        return this.createIndex();
+    //    var self = this;
+        return this.createIndex(filePath);
     };
 
     // this.searchIndex = function(search_terms) {
-    //     //returns an Array of numbers, each number representing the index (position) of an object in the JSON file.
+    //     //returns an Array of numbers, each number representing the index (position) of 
+    	   //an object in the JSON file.
     // };
 };
 
@@ -118,5 +119,5 @@ function removeDuplicates(data) {
     return noDuplicates;
 }
 var m = new Index();
-m.createIndex('../spec/books.json');
-console.log(m.index);
+//m.createIndex('../spec/books.json');
+console.log(m.getIndex('books.json'));
