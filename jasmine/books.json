@@ -1,11 +1,15 @@
 [
   {
     "title": "Alice in Wonderland",
-    "text": "Alice falls into a rabbit hole and enters a world full of imagination."
+    "text": "Alice falls into a rabbit hole dwarf and enters a world full of imagination."
   },
 
   {
     "title": "The Lord of the Rings: The Fellowship of the Ring.",
     "text": "An unusual alliance of man, elf, dwarf, wizard and hobbit seek to destroy a powerful ring."
+  },
+  {
+    "title": "The Book of the Ice and Fire.",
+    "text": "An elegant alliance of a woman, a dwarf and a dragon, fighting to rule the seven kingdoms."
   }
 ]

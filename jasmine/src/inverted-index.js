@@ -1,89 +1,112 @@
-Index = function(){
+Index = function(filePath) {
 
-    this.index  = {};
-    this.data = [];
-    //var self = this;
+  this.index = {};
+  this.data = [];
+  //var self = this;
+
+  // fetch data from books.json   
+  this.getBookData = function(filePath) {
+    return $.getJSON(filePath);
+  }
+
+  // takes data from the JSON file and creates an index from it
+  this.createIndex = function(data) {
+    var self = this;
+    // create index and return it as an object
+
+    bookData = data;
+
+    // remove punctuations
+    var noPunct = removePunct(data);
+
+    // remove stopwords
+    var noStopWords = removeStopWords(noPunct);
+
+    //remove duplicates
+    var noDups = removeDuplicates(noStopWords);
 
 
-    this.createIndex =  function(filePath) {
-        var self = this;
-        // create index and return it as an object
-        //fetch data from books.json	
-        $.getJSON(filePath, false, function(data) {
+    var pattern = /[.',:]/gi;
 
-            this.data = data;
+    // create object with noDups as keys and an array for each showing which document
+    // they key is found in
+    for (var i = 0; i < noDups.length; i++) {
 
-            //remove punctuations
-            var noPunct = removePunct(this.data);
+        // initialize array as empty.
+        self.index[noDups[i]] = [];
+        var found = [];
+        // use JSON data with objects who index j will be pushed to the array found
+        for (var j = 0; j < bookData.length; j++) {
+          var bookText = bookData[j].title.replace(pattern, '').toLowerCase().split(' ')
+              .concat(bookData[j].text.replace(pattern, '').toLowerCase().split(' '));
 
-            //remove stopwords
-            var noStopWords = removeStopWords(noPunct);
-
-            //remove duplicates
-            var noDups = removeDuplicates(noStopWords);
-
-
-            var pattern = /[.',:]/gi;
-
-            // create object with noDups as keys and an array for each showing which document
-            // they key is found in
-            for (var i = 0; i < noDups.length; i++) {
-
-                // initialize array as empty.
-                self.index[noDups[i]] = [];
-                var found = [];
-                // use JSON data with objects who index j will be pushed to the array found
-                for (var j = 0; j < this.data.length; j++) {
-                    var bookText = this.data[j].title.replace(pattern, '').toLowerCase().split(' ')
-                        .concat(this.data[j].text.replace(pattern, '').toLowerCase().split(' '));
-
-                    for (var k = 0; k < bookText.length; k++) {
-                        // if the data from each document has the key value push it to found	
-                        if (bookText.indexOf(noDups[i]) > -1) {
-                            found.push(j);
-                            // break the loop as the word exists in the document.
-                            break;
-                        }
-                    }
-
-                }
-                // set the index with noDups as the key and the array found as the value
-                self.index[noDups[i]] = self.index[noDups[i]].concat(found);
-                // = self.index;		
+          for (var k = 0; k < bookText.length; k++) {
+            // if the data from each document has the key value push it to found    
+            if (bookText.indexOf(noDups[i]) > -1) {
+              found.push(j);
+              // break the loop as the word exists in the document.
+              break;
             }
-            this.index = self.index;
-            console.log(this.index);
-            return this.index;
-            //cb(self.getIndex(self.index));
-        });
+          }
+
+        }
+        // set the index with noDups as the key and the array found as the value
+        self.index[noDups[i]] = self.index[noDups[i]].concat(found);
+    }
+    // return the created index
+    console.log(self.index);
+    return self.index;
+
+  };
+
+  this.getIndex = function() {
+      // returns an object that is an accurate index of the content of the JSON file.
+      return this.index;
+  };
+
+  this.searchIndex = function(searchTerms) {
+      // returns an  object showing the indices for each word in the search terms parameter
+      var indexResult = {},  
+          indexAsArray = Object.keys(this.index);
+      var splitTerms;
+      if (typeof searchTerms == 'string'){
+        splitTerms = searchTerms.split(' ');
+      }
+      else{
+        splitTerms = searchTerms;
+      }
+      // loop through array of search terms and check whether it exists in the main index
+      // if exist return index results
+      for(var i = 0; i < splitTerms.length; i++) {
+        if (indexAsArray.indexOf(splitTerms[i]) > -1) {
+          indexResult[splitTerms[i]] = this.index[splitTerms[i]];
+        }
+
+      }
+      return indexResult;
+     
+
     };
 
-    this.getIndex = function(filePath) {
-        //returns an object that is an accurate index of the content of the JSON file.
-        //this.index = ind;
-    //    var self = this;
-        return this.createIndex(filePath);
-    };
-
-    // this.searchIndex = function(search_terms) {
-    //     //returns an Array of numbers, each number representing the index (position) of 
-    	   //an object in the JSON file.
-    // };
-};
+  };
 
 function removePunct(data) {
-    var pattern = /[.',:]/gi;
-    var doc1 = data[0].title.replace(pattern, '').toLowerCase().split(' ')
-        .concat(data[0].text.replace(pattern, '').toLowerCase().split(' '));
-    var doc2 = data[1].title.replace(pattern, '').toLowerCase().split(' ')
-        .concat(data[1].text.replace(pattern, '').toLowerCase().split(' '));
+var pattern = /[.',:]/gi;
+  var noPunct = [],
+      doc = [];
 
-    var noPunct = doc1.concat(doc2).sort();
-
-    return noPunct;
+  // for every object in the array get all words and remove punctuations
+  for(var inc = 0; inc < data.length; inc++) {
+    
+    doc = data[inc].title.replace(pattern, '').toLowerCase().split(' ')
+      .concat(data[inc].text.replace(pattern, '').toLowerCase().split(' '));
+     
+      noPunct = noPunct.concat(doc);
+    
+  }
+  // return the array of words sorted alphabetically
+  return noPunct.sort();
 }
-
-
 function removeStopWords(data) {
     stopWords = [
         'a', 'about', 'above', 'after', 'again', 'against', 'all', 'am', 'an', 'and',
@@ -112,12 +135,10 @@ function removeStopWords(data) {
 
 function removeDuplicates(data) {
     noDuplicates = data;
+    // if two or more consecutive words are similar remove one of them
     for (var i = 0; i < noDuplicates.length; i++) {
         if (noDuplicates[i] === noDuplicates[i + 1])
             noDuplicates.splice(i, 1);
     }
     return noDuplicates;
 }
-var m = new Index();
-//m.createIndex('../spec/books.json');
-console.log(m.getIndex('books.json'));
