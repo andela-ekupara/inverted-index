@@ -2,64 +2,58 @@ var Index = function() {
 
   this.index = {};
   this.data = [];
-  //var self = this;
 
   // fetch data from books.json
-  this.getBookData = function(filePath) {
-    return $.getJSON(filePath);
+  this.getBookData = function( filePath ) {
+    return $.getJSON( filePath );
   };
 
   // takes data from the JSON file and creates an index from it
-  this.createIndex = function(data) {
+  this.createIndex = function( data ) {
     var self = this;
     // create index and return it as an object
 
-    var bookData = data;
+    var bookData = data,
+    		pattern = /[.',:]/gi;
 
     // remove punctuations
-    var noPunct = removePunct(data);
+    var noPunct = removePunct( data );
 
     // remove stopwords
-    var noStopWords = removeStopWords(noPunct);
+    var noStopWords = removeStopWords( noPunct );
 
     //remove duplicates
-    var noDups = removeDuplicates(noStopWords);
-
-
-    var pattern = /[.',:]/gi;
+    var noDups = removeDuplicates( noStopWords );
 
     // create object with noDups as keys and an array for each showing
     // which document the key is found in
-    for (var i = 0; i < noDups.length; i++) {
+    for ( var i = 0; i < noDups.length; i++ ) {
 
         // initialize array as empty.
-        self.index[noDups[i]] = [];
+        self.index[ noDups[ i ] ] = [];
         var found = [];
         // use JSON data with objects who index j will be
         // pushed to the array found
-        for (var j = 0; j < bookData.length; j++) {
-          var bookText = bookData[j].title.replace(pattern, '')
+        for ( var j = 0; j < bookData.length; j++ ) {
+          var bookText = bookData[ j ].title.replace( pattern, '' )
           		.toLowerCase().split(' ')
-              .concat(bookData[j].text.replace(pattern, '')
-              .toLowerCase().split(' '));
+              .concat( bookData[ j ].text.replace( pattern, '' )
+              .toLowerCase().split(' ') );
 
-          for (var k = 0; k < bookText.length; k++) {
+          for ( var k = 0; k < bookText.length; k++ ) {
             // if the data from each document has the key value push it to found
-            if (bookText.indexOf(noDups[i]) > -1) {
-              found.push(j);
+            if ( bookText.indexOf( noDups[ i ] ) > -1 ) {
+              found.push( j );
               // break the loop as the word exists in the document.
               break;
             }
           }
-
         }
         // set the index with noDups as the key and the array found as the value
-        self.index[noDups[i]] = self.index[noDups[i]].concat(found);
+        self.index[ noDups[ i ] ] = self.index[ noDups[ i ] ].concat( found );
     }
     // return the created index
-    // console.log(self.index);
     return self.index;
-
   };
 
   this.getIndex = function() {
@@ -67,13 +61,13 @@ var Index = function() {
       return this.index;
   };
 
-  this.searchIndex = function(searchTerms) {
+  this.searchIndex = function( searchTerms ) {
       // returns an  object showing the indices for each word in
       // the search terms parameter
       var indexResult = {},
-          indexAsArray = Object.keys(this.index);
+          indexAsArray = Object.keys( this.index );
       var splitTerms;
-      if (typeof searchTerms == 'string'){
+      if ( typeof searchTerms == 'string' ){
         splitTerms = searchTerms.split(' ');
       }
       else{
@@ -82,39 +76,39 @@ var Index = function() {
       // loop through array of search terms and check whether it exists
       // in the main index
 
-      for(var i = 0; i < splitTerms.length; i++) {
-        if (indexAsArray.indexOf(splitTerms[i]) == -1) {
-        	indexResult[splitTerms[i]] = 'Error: the term couldn\'t be found';
+      for( var i = 0; i < splitTerms.length; i++ ) {
+        if ( indexAsArray.indexOf( splitTerms[ i ] ) == -1 ) {
+        	indexResult[ splitTerms[ i ] ] = 'Error: the term couldn\'t be found';
         	break;
          }
-        indexResult[splitTerms[i]] = this.index[splitTerms[i]];
-
+        indexResult[ splitTerms[ i ] ] = this.index[ splitTerms[ i ] ];
       }
       return indexResult;
-
-
     };
 
   };
 
-function removePunct(data) {
+var removePunct = function( data ) {
 var pattern = /[.',:]/gi;
   var noPunct = [],
       doc = [];
 
   // for every object in the array get all words and remove punctuations
-  for(var inc = 0; inc < data.length; inc++) {
+  for( var inc = 0; inc < data.length; inc++ ) {
 
-    doc = data[inc].title.replace(pattern, '').toLowerCase().split(' ')
-      .concat(data[inc].text.replace(pattern, '').toLowerCase().split(' '));
+    doc = data[ inc ].title.replace( pattern, '' )
+    	.toLowerCase().split(' ')
+      .concat( data[ inc ].text.replace( pattern, '' )
+      .toLowerCase().split(' ') );
 
-      noPunct = noPunct.concat(doc);
+      noPunct = noPunct.concat( doc );
 
   }
   // return the array of words sorted alphabetically
   return noPunct.sort();
-}
-function removeStopWords(data) {
+};
+
+var removeStopWords = function( data ) {
   var stopWords = [
     'a', 'about', 'above', 'again', 'against', 'all', 'am', 'an', 'and',
     'any', 'are', 'as', 'at', 'be', 'because', 'been', 'before', 'being',
@@ -132,21 +126,21 @@ function removeStopWords(data) {
     'yourself', 'yourselves'
   ];
     var noStopWords = [];
-    for (var i = 0; i < data.length; i++) {
-        if (stopWords.indexOf(data[i]) < 0) {
-            noStopWords.push(data[i]);
+    for ( var i = 0; i < data.length; i++ ) {
+        if ( stopWords.indexOf( data[ i ] ) < 0 ) {
+            noStopWords.push( data[ i ] );
         }
     }
     return noStopWords;
-}
+};
 
-function removeDuplicates(data) {
+var removeDuplicates = function( data ) {
     var noDuplicates = data;
     // if two or more consecutive words are similar remove one of them
-    for (var i = 0; i < noDuplicates.length; i++) {
-        if (noDuplicates[i] === noDuplicates[i + 1]) {
-            noDuplicates.splice(i, 1);
+    for ( var i = 0; i < noDuplicates.length; i++ ) {
+        if ( noDuplicates[ i ] === noDuplicates[ i + 1 ] ) {
+            noDuplicates.splice( i, 1 );
           }
     }
     return noDuplicates;
-}
+};
