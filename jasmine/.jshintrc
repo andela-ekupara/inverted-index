@@ -2,7 +2,7 @@
   "asi": false,
   "bitwise": true,
   "browser": true,
-  "camelcase": false,
+  "camelcase": true,
   "curly": true,
   "forin": true,
   "immed": true,
@@ -15,21 +15,16 @@
   "predef": [
     "$",
     "jQuery",
+
     "jasmine",
     "beforeEach",
     "describe",
     "expect",
     "it",
+
+    "angular",
     "inject",
-    "module",
-    "require",
-    "process",
-    "__dirname",
-    "console",
-    "browser",
-    "element",
-    "by",
-    "exports"
+    "module"
   ],
   "quotmark": true,
   "trailing": true,
