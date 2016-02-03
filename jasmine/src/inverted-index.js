@@ -73,10 +73,9 @@ var Index = function() {
       else{
         splitTerms = searchTerms;
       }
-      // loop through array of search terms and check whether it exists
-      // in the main index
-
-      for( var i = 0; i < splitTerms.length; i++ ) {
+     // loop through array of search terms and check whether it exists
+     // in the main index
+		 for( var i = 0; i < splitTerms.length; i++ ) {
         if ( indexAsArray.indexOf( splitTerms[ i ] ) == -1 ) {
         	indexResult[ splitTerms[ i ] ] = 'Error: the term couldn\'t be found';
         	break;
@@ -85,24 +84,20 @@ var Index = function() {
       }
       return indexResult;
     };
-
   };
 
 var removePunct = function( data ) {
-var pattern = /[.',:]/gi;
+	var pattern = /[.',:]/gi;
   var noPunct = [],
       doc = [];
 
   // for every object in the array get all words and remove punctuations
   for( var inc = 0; inc < data.length; inc++ ) {
-
-    doc = data[ inc ].title.replace( pattern, '' )
+		doc = data[ inc ].title.replace( pattern, '' )
     	.toLowerCase().split(' ')
       .concat( data[ inc ].text.replace( pattern, '' )
       .toLowerCase().split(' ') );
-
       noPunct = noPunct.concat( doc );
-
   }
   // return the array of words sorted alphabetically
   return noPunct.sort();

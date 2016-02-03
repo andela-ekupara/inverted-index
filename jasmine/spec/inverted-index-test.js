@@ -20,6 +20,7 @@ describe('Tests for InvertedIndex Checkpoint', function() {
 			expect( bookData.length ).not.toEqual( 0 );
 		});
 	});
+
 	describe('Populate Index', function() {
 		console.log();
 		it('creates an index', function() {
@@ -45,7 +46,6 @@ describe('Tests for InvertedIndex Checkpoint', function() {
 			});
 			expect( testIndex.createIndex ).toHaveBeenCalled();
 			expect( testIndex.createIndex ).toHaveBeenCalledWith( bookData );
-
 		});
 
 		it('creates the correct index', function() {
