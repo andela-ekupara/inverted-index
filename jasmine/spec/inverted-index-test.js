@@ -28,7 +28,7 @@ describe('Tests for InvertedIndex Checkpoint', function() {
 			expect( typeof index ).toBe('object');
 			var indexKeys = Object.keys( index );
 			expect( indexKeys.length ).not.toBe( 0 );
-			for ( var key in indexKeys ){
+			for( var key = 0; key < indexKeys.length; key++ ){
 				expect( index.hasOwnProperty( indexKeys[ key ]) ).toBeTruthy();
 				expect( Array.isArray( index[ indexKeys[ key ] ]) ).toBe( true );
 			}
