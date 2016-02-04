@@ -50,7 +50,7 @@ describe('Tests for InvertedIndex Checkpoint', function() {
       // index is an object, no punctuations or uppercases
       expect(typeof index).toBe('object');
       expect(Array.isArray(index.dragon)).toBeTruthy();
-      expect(index.dragon).toEqual([ 2 ]) ;
+      expect(index.dragon).toEqual([2]) ;
       expect(index.dwarf).toEqual([0, 1, 2]);
       expect(index['.']).not.toBeDefined();
       expect(index.Alice).not.toBeDefined();
