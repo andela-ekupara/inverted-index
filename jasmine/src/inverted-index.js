@@ -7,8 +7,8 @@ var InvertedIndex;
     this.data = [];
 
     // fetch data from books.json
-    this.getBookData = function(filePath ) {
-      return $.getJSON( filePath );
+    this.getBookData = function(filePath) {
+      return $.getJSON(filePath);
     };
 
     // this function removes punctuations, uppercases, stopwords
@@ -52,9 +52,9 @@ var InvertedIndex;
         }
       }
       // if two or more consecutive words are similar remove one of them
-      for ( var j = 0; j < refinedData.length; j++) {
+      for (var j = 0; j < refinedData.length; j++) {
         if (refinedData[j] === refinedData[j + 1]) {
-          refinedData.splice( j, 1 );
+          refinedData.splice(j, 1);
         }
       }
       return refinedData;
@@ -84,7 +84,7 @@ var InvertedIndex;
           for (var k = 0; k < bookText.length; k++) {
             // if the data from each document has the key
             // value push it to found
-            if (bookText.indexOf( noDups[ i ] ) > -1) {
+            if (bookText.indexOf(noDups[i]) > -1) {
               found.push(j);
               // break the loop as the word exists in the document.
               break;
@@ -108,7 +108,7 @@ var InvertedIndex;
       // returns an  object showing the indices for each word in
       // the search terms parameter
       var indexResult = {},
-          indexAsArray = Object.keys( this.index ),
+          indexAsArray = Object.keys(this.index),
           splitTerms;
       if (typeof searchTerms == 'string'){
         splitTerms = searchTerms.split(' ');

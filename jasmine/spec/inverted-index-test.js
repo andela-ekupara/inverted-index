@@ -2,22 +2,22 @@ describe('Tests for InvertedIndex Checkpoint', function() {
   var testIndex = new InvertedIndex();
   var bookData, index;
 
-  beforeEach(function( done ) {
+  beforeEach(function(done) {
     // get data from books.json
-    testIndex.getBookData('books.json').done(function( data ) {
+    testIndex.getBookData('books.json').done(function(data) {
       bookData = data;
-      index = testIndex.createIndex( bookData );
+      index = testIndex.createIndex(bookData);
       done();
     });
-    spyOn( testIndex, 'createIndex' ).and.callThrough();
+    spyOn(testIndex, 'createIndex').and.callThrough();
     });
 
   describe('Read book data', function() {
     // check that the data returned is not empty
     it('The books.json file should not be empty', function() {
-      expect( bookData ).toBeDefined();
-      expect( typeof bookData ).toBe('object');
-      expect( bookData.length ).not.toEqual( 0 );
+      expect(bookData).toBeDefined();
+      expect(typeof bookData).toBe('object');
+      expect(bookData.length).not.toEqual(0);
     });
   });
 
@@ -28,7 +28,7 @@ describe('Tests for InvertedIndex Checkpoint', function() {
       expect(typeof index).toBe('object');
       var indexKeys = Object.keys(index);
       expect(indexKeys.length).not.toBe(0);
-      for( var key = 0; key < indexKeys.length; key++ ){
+      for(var key = 0; key < indexKeys.length; key++){
         expect(index.hasOwnProperty(indexKeys[key])).toBeTruthy();
         expect(Array.isArray(index[indexKeys[key]])).toBe(true);
       }
