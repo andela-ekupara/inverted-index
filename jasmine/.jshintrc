@@ -15,7 +15,9 @@
   "predef": [
     "$",
     "jQuery",
-
+    "InvertedIndex",
+    "console",
+    "spyOn",
     "jasmine",
     "beforeEach",
     "describe",
@@ -29,5 +31,5 @@
   "quotmark": true,
   "trailing": true,
   "undef": true,
-  "unused": true
+  "unused": false
 }
