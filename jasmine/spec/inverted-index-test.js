@@ -1,6 +1,5 @@
 describe('Tests for InvertedIndex Checkpoint', function() {
-  var testIndex = new InvertedIndex();
-  var bookData, index;
+  var testIndex = new InvertedIndex(), bookData, index;
 
   beforeEach(function(done) {
     // get data from books.json
@@ -101,11 +100,12 @@ describe('Tests for InvertedIndex Checkpoint', function() {
           'world', 'elf', 'dwarf', 'hobbit', 'wizard',
           'destroy', 'ring', 'seek', 'alliance', 'man'
          ];
+
        // Start tracking time just before the function is called
-      var start = performance.now();
+      var start = window.performance.now();
       var results = testIndex.searchIndex(terms);
       // Check the time after the function is done
-      var end = performance.now();
+      var end = window.performance.now();
       // check that the correct results are returned
       expect(Object.keys(results).length).toBe(terms.length);
       // check that the time is below 1 ms

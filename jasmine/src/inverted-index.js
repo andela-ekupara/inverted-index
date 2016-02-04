@@ -2,27 +2,27 @@ var InvertedIndex;
 (function () {
   'use strict';
 
-  InvertedIndex = function() {
+  InvertedIndex = function () {
     this.index = {};
     this.data = [];
 
     // fetch data from books.json
-    this.getBookData = function(filePath) {
+    this.getBookData = function (filePath) {
       return $.getJSON(filePath);
     };
 
     // this function removes punctuations, uppercases, stopwords
     // and duplicates
-    this.refineData = function(data) {
+    this.refineData = function (data) {
       var pattern = /[.',:]/gi;
       var unrefinedData = [],
-          doc = [],
-          refinedData = [],
-          stopWords = [
+        doc = [],
+        refinedData = [],
+        stopWords = [
           'a', 'about', 'above', 'again', 'against', 'all', 'am', 'an',
           'and', 'any', 'are', 'as', 'at', 'be', 'because', 'been',
           'before', 'being', 'below', 'between', 'both', 'but', 'by',
-          'can', 'did', 'do', 'does','doing', 'don', 'down', 'during',
+          'can', 'did', 'do', 'does', 'doing', 'don', 'down', 'during',
           'each', 'few', 'for', 'from', 'further', 'had', 'has', 'have',
           'having', 'he', 'her', 'here', 'hers', 'herself', 'him',
           'himself', 'his', 'how', 'i', 'if', 'in', 'into', 'is',
@@ -48,7 +48,7 @@ var InvertedIndex;
       unrefinedData.sort();
       for (var i = 0; i < unrefinedData.length; i++) {
         if (stopWords.indexOf(unrefinedData[i]) < 0) {
-            refinedData.push(unrefinedData[i]);
+          refinedData.push(unrefinedData[i]);
         }
       }
       // if two or more consecutive words are similar remove one of them
@@ -61,7 +61,7 @@ var InvertedIndex;
     };
 
    // takes data from the JSON file and creates an index from it
-    this.createIndex = function(data) {
+    this.createIndex = function (data) {
       // create index and return it as an object
       var self = this,
           bookData = data,
