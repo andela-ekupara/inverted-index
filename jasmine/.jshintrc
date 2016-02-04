@@ -15,7 +15,6 @@
   "predef": [
     "$",
     "jQuery",
-    "InvertedIndex",
     "console",
     "spyOn",
     "jasmine",
@@ -23,7 +22,6 @@
     "describe",
     "expect",
     "it",
-
     "angular",
     "inject",
     "module"
