@@ -110,10 +110,9 @@ var InvertedIndex;
       var indexResult = {},
           indexAsArray = Object.keys(this.index),
           splitTerms;
-      if (typeof searchTerms == 'string'){
+      if (typeof searchTerms === 'string'){
         splitTerms = searchTerms.split(' ');
-      }
-      else{
+      } else{
         splitTerms = searchTerms;
       }
      // loop through array of search terms and check whether it exists

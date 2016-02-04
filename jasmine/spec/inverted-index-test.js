@@ -8,8 +8,9 @@ describe('Tests for InvertedIndex Checkpoint', function() {
       index = testIndex.createIndex(bookData);
       done();
     });
+
     spyOn(testIndex, 'createIndex').and.callThrough();
-    });
+  });
 
   describe('Read book data', function() {
     // check that the data returned is not empty
@@ -41,6 +42,7 @@ describe('Tests for InvertedIndex Checkpoint', function() {
         index = testIndex.createIndex(bookData);
         done();
       });
+
       expect(testIndex.createIndex).toHaveBeenCalled();
       expect(testIndex.createIndex).toHaveBeenCalledWith(bookData);
     });
