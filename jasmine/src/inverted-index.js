@@ -1,19 +1,18 @@
-var InvertedIndex;
-(function () {
+(function() {
   'use strict';
 
-  InvertedIndex = function () {
+  window.InvertedIndex = function() {
     this.index = {};
     this.data = [];
 
     // fetch data from books.json
-    this.getBookData = function (filePath) {
+    this.getBookData = function(filePath) {
       return $.getJSON(filePath);
     };
 
     // this function removes punctuations, uppercases, stopwords
     // and duplicates
-    this.refineData = function (data) {
+    this.refineData = function(data) {
       var pattern = /[.',:]/gi;
       var unrefinedData = [],
         doc = [],
@@ -60,27 +59,27 @@ var InvertedIndex;
       return refinedData;
     };
 
-   // takes data from the JSON file and creates an index from it
-    this.createIndex = function (data) {
+    // takes data from the JSON file and creates an index from it
+    this.createIndex = function(data) {
       // create index and return it as an object
       var self = this,
-          bookData = data,
-          pattern = /[.',:]/gi;
+        bookData = data,
+        pattern = /[.',:]/gi;
       //remove duplicates
       var noDups = self.refineData(bookData);
       // create object with noDups as keys and an array for each showing
       // which document the key is found in
       for (var i = 0; i < noDups.length; i++) {
-        // initialize array as empty.
+      // initialize array as empty.
         self.index[noDups[i]] = [];
         var found = [];
         // use JSON data with objects who index j will be
         // pushed to the array found
         for (var j = 0; j < bookData.length; j++) {
           var bookText = bookData[j].title.replace(pattern, '')
-              .toLowerCase().split(' ')
-              .concat(bookData[j].text.replace(pattern, '')
-              .toLowerCase().split(' '));
+            .toLowerCase().split(' ')
+            .concat(bookData[j].text.replace(pattern, '')
+            .toLowerCase().split(' '));
           for (var k = 0; k < bookText.length; k++) {
             // if the data from each document has the key
             // value push it to found
@@ -100,28 +99,28 @@ var InvertedIndex;
     };
 
     this.getIndex = function() {
-        // returns the index of the content of the JSON file.
-        return this.index;
+      // returns the index of the content of the JSON file.
+      return this.index;
     };
 
     this.searchIndex = function(searchTerms) {
       // returns an  object showing the indices for each word in
       // the search terms parameter
       var indexResult = {},
-          indexAsArray = Object.keys(this.index),
-          splitTerms;
-      if (typeof searchTerms === 'string'){
+        indexAsArray = Object.keys(this.index),
+        splitTerms;
+      if (typeof searchTerms === 'string') {
         splitTerms = searchTerms.split(' ');
-      } else{
+      } else {
         splitTerms = searchTerms;
       }
-     // loop through array of search terms and check whether it exists
-     // in the main index
-     for (var i = 0; i < splitTerms.length; i++) {
+      // loop through array of search terms and check whether it exists
+      // in the main index
+      for (var i = 0; i < splitTerms.length; i++) {
         if (indexAsArray.indexOf(splitTerms[i]) === -1) {
           indexResult[splitTerms[i]] = 'Error: the term couldn\'t be found';
           break;
-         }
+        }
         indexResult[splitTerms[i]] = this.index[splitTerms[i]];
       }
       return indexResult;
