@@ -118,7 +118,7 @@ var InvertedIndex;
      // loop through array of search terms and check whether it exists
      // in the main index
      for (var i = 0; i < splitTerms.length; i++) {
-        if (indexAsArray.indexOf(splitTerms[i]) == -1) {
+        if (indexAsArray.indexOf(splitTerms[i]) === -1) {
           indexResult[splitTerms[i]] = 'Error: the term couldn\'t be found';
           break;
          }
